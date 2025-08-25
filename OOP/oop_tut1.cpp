@@ -1,3 +1,20 @@
+/*
+Operations on Bank Account
+Implement a class to illustrate working of a bank account of a customer that consists of
+following members Data members:
+i. Name of the customer
+ii. Account Type
+iii. Account Number
+iv. Available balance amount in the account
+Member Functions:
+i. Assign initial values using constructors.
+ii. Deposit an amount in account
+iii. Withdraw an amount
+iv. Display account details
+*/
+
+
+
 #include <iostream>
 #include <string>
 using namespace std;
