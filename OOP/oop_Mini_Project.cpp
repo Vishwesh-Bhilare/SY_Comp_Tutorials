@@ -8,7 +8,6 @@ protected:
     string title;
 public:
     Record(int id, string title) : id(id), title(std::move(title)) {}
-    virtual ~Record() = default;
     virtual void display() const = 0; // pure virtual for polymorphism
 };
 
