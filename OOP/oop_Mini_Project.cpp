@@ -1,22 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// ========================= Task =========================
-class Task {
+// ========================= Base Class =========================
+class Record {
+protected:
     int id;
     string title;
+public:
+    Record(int id, string title) : id(id), title(std::move(title)) {}
+    virtual ~Record() = default;
+    virtual void display() const = 0; // pure virtual for polymorphism
+};
+
+// ========================= Task =========================
+class Task : public Record {
     bool done;
     int hoursEstimated, hoursSpent;
 public:
     Task(int id, const string &title, int hoursEstimated = 0)
-        : id(id), title(title), done(false),
+        : Record(id, title), done(false),
           hoursEstimated(hoursEstimated), hoursSpent(0) {}
 
     void logHours(int h) { hoursSpent += h; }
-    void markDone()      { done = true; }
-    bool isDone() const  { return done; }
+    void markDone() { done = true; }
+    bool isDone() const { return done; }
 
-    void display() const {
+    void display() const override {
         cout << "[Task] #" << id << ": " << title
              << " | Done: " << (done ? "Yes" : "No")
              << " | Est: " << hoursEstimated << "h"
@@ -25,20 +34,18 @@ public:
 };
 
 // ========================= Invoice =========================
-class Invoice {
-    int id;
-    string title;
+class Invoice : public Record {
     double amount;
     bool paid;
 public:
     Invoice(int id, const string &title, double amount, bool paid = false)
-        : id(id), title(title), amount(amount), paid(paid) {}
+        : Record(id, title), amount(amount), paid(paid) {}
 
-    void markPaid()        { paid = true; }
-    bool isPaid() const    { return paid; }
+    void markPaid() { paid = true; }
+    bool isPaid() const { return paid; }
     double getAmount() const { return amount; }
 
-    void display() const {
+    void display() const override {
         cout << "[Invoice] #" << id << ": " << title
              << " | Amount: Rs." << fixed << setprecision(2) << amount
              << " | Paid: " << (paid ? "Yes" : "No") << "\n";
@@ -71,11 +78,10 @@ public:
         for (const auto &inv : invoices) inv.display();
     }
 
-    int getId() const        { return id; }
-    string getName() const   { return name; }
+    int getId() const { return id; }
+    string getName() const { return name; }
     string getStatus() const { return status; }
 
-    // ----- Stats -----
     int totalTasks() const { return tasks.size(); }
 
     int doneTasks() const {
@@ -105,7 +111,6 @@ public:
         cout << "\n========== DASHBOARD ==========\n";
         cout << "Total projects: " << projects.size() << "\n\n";
 
-        // Project status distribution
         map<string, int> statusCount;
         for (const auto &p : projects) statusCount[p.getStatus()]++;
 
@@ -116,7 +121,6 @@ public:
         }
         cout << "\n";
 
-        // Per-project progress
         for (const auto &p : projects) {
             int total = p.totalTasks();
             int done = p.doneTasks();
