@@ -31,13 +31,6 @@ int main() {
         }
         hash_val = num_val % servers;   // division method
 
-        // linear probing for collision resolution
-        int check = 0;
-        while (server_count[hash_val] > 0) {
-            // we allow multiple requests in same server, so no need to skip
-            break;
-        }
-
         // assign request
         hash_servers[hash_val][server_count[hash_val]] = val;
         server_count[hash_val]++;
