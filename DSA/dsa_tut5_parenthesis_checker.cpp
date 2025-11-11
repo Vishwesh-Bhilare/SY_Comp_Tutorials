@@ -1,26 +1,52 @@
 #include <iostream>
 #include <string>
-#include <stack>
 using namespace std;
 
-bool isBalanced(string expr) {
-    stack<char> s;
+#define MAX 100
 
-    for (char ch : expr) {
-        if (ch == '(' || ch == '{' || ch == '[') {
+class Stack {
+    char arr[MAX];
+    int topIndex;
+
+public:
+    Stack() { topIndex = -1; }
+
+    void push(char c) {
+        if (topIndex < MAX - 1)
+            arr[++topIndex] = c;
+    }
+
+    void pop() {
+        if (topIndex >= 0)
+            topIndex--;
+    }
+
+    bool empty() {
+        return topIndex == -1;
+    }
+
+    char top() {
+        return arr[topIndex];
+    }
+};
+
+bool isBalanced(string exp) {
+    Stack s;
+
+    for (char ch : exp) {
+        if (ch == '(' || ch == '[' || ch == '{')
             s.push(ch);
-        } 
-        else if (ch == ')') {
-            if (s.empty() || s.top() != '(') return false;
+
+        else if (ch == ')' || ch == ']' || ch == '}') {
+            if (s.empty()) return false;
+
+            char open = s.top();
             s.pop();
-        } 
-        else if (ch == '}') {
-            if (s.empty() || s.top() != '{') return false;
-            s.pop();
-        } 
-        else if (ch == ']') {
-            if (s.empty() || s.top() != '[') return false;
-            s.pop();
+
+            if ((ch == ')' && open != '(') ||
+                (ch == ']' && open != '[') ||
+                (ch == '}' && open != '{'))
+                return false;
         }
     }
 
@@ -28,14 +54,14 @@ bool isBalanced(string expr) {
 }
 
 int main() {
-    string expression;
-    cout << "Enter an expression: ";
-    cin >> expression;
+    string exp;
+    cout << "Enter expression: ";
+    cin >> exp;
 
-    if (isBalanced(expression))
-        cout << "Balanced expression" << endl;
+    if (isBalanced(exp))
+        cout << "Balanced\n";
     else
-        cout << "Not balanced" << endl;
+        cout << "Not Balanced\n";
 
     return 0;
 }
