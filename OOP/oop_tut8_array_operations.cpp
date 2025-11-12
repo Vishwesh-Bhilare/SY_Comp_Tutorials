@@ -28,7 +28,6 @@ void sel(T A[size])
 int main()
 {
     int choice;
-    char C[size];
     int A[size];
     float B[size];
     int i;
